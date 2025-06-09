@@ -13,7 +13,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    private String name;
+    private String username;
 
     private String password;
 
