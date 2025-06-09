@@ -1,9 +1,6 @@
 package com.cryptotrading.cryptotrading.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,7 +10,10 @@ import java.math.BigDecimal;
 @Builder
 public class Holding {
 
-    private Long userId;
+    @Setter(AccessLevel.NONE)
+    private String id;
+
+    private String userId;
 
     private String symbol;
 

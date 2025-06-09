@@ -3,6 +3,11 @@ package com.cryptotrading.cryptotrading.dao.impl;
 import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.domain.Transaction;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class TransactionDaoImpl implements TransactionDao {
 
@@ -14,9 +19,34 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public void create(Transaction transaction) {
-        jdbcTemplate.update("INSERT INTO transactions (id, user_id, type, symbol, amount, price, total, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                transaction.getId(), transaction.getUserId(), transaction.getType(),
+        jdbcTemplate.update("INSERT INTO transactions (user_id, type, symbol, amount, price, total, transaction_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                transaction.getUserId(), transaction.getType(),
                 transaction.getSymbol(), transaction.getAmount(), transaction.getPrice(),
-                transaction.getTotal(), transaction.getTimestamp());
+                transaction.getTotal(), transaction.getTransactionTime());
+    }
+
+    @Override
+    public Transaction findOne(String id) {
+        List<Transaction> result = jdbcTemplate.query(
+                    "SELECT * FROM transactions WHERE id = ? LIMIT 1",
+                        new TransactionRowMapper(),
+                        id);
+
+        return result.stream().findFirst().orElse(null);
+    }
+
+    public static class TransactionRowMapper implements RowMapper<Transaction> {
+        public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return Transaction.builder()
+                    .id(rs.getString("id"))
+                    .userId(rs.getString("user_id"))
+                    .type(rs.getString("type"))
+                    .symbol(rs.getString("symbol"))
+                    .amount(rs.getBigDecimal("amount"))
+                    .price(rs.getBigDecimal("price"))
+                    .total(rs.getBigDecimal("total"))
+                    .transactionTime(rs.getTimestamp("transaction_time").toLocalDateTime())
+                    .build();
+        }
     }
 }

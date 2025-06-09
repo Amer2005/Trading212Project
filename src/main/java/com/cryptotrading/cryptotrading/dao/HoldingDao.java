@@ -4,4 +4,6 @@ import com.cryptotrading.cryptotrading.domain.Holding;
 
 public interface HoldingDao {
     void create(Holding holding);
+
+    Holding findOne(String id);
 }

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class User {
 
     @Setter(AccessLevel.NONE)
-    private Long id;
+    private String id;
 
     private String username;
 

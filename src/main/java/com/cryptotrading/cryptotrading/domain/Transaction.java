@@ -1,9 +1,6 @@
 package com.cryptotrading.cryptotrading.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,9 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 public class Transaction {
 
-    private Long id;
+    @Setter(AccessLevel.NONE)
+    private String id;
 
-    private Long userId;
+    private String userId;
 
     private String type;
 
@@ -28,5 +26,5 @@ public class Transaction {
 
     private BigDecimal total;
 
-    private LocalDateTime timestamp;
+    private LocalDateTime transactionTime;
 }
