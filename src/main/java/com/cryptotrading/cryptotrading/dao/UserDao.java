@@ -6,4 +6,6 @@ public interface UserDao {
     void create(User user);
 
     User findOne(String id);
+
+    User findByUsername(String username);
 }

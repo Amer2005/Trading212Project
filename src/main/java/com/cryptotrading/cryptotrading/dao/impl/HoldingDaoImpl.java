@@ -4,11 +4,13 @@ import com.cryptotrading.cryptotrading.dao.HoldingDao;
 import com.cryptotrading.cryptotrading.domain.Holding;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class HoldingDaoImpl implements HoldingDao {
 
     private final JdbcTemplate jdbcTemplate;

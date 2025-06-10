@@ -5,11 +5,13 @@ import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,9 +29,19 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findOne(String id) {
         List<User> results = jdbcTemplate.query(
-                "SELECT * FROM users WHERE id = ? LIMIT 1",
+                "SELECT id, username, balance FROM users WHERE id = ? LIMIT 1",
                 new UserRowMapper(),
                 id);
+
+        return results.stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        List<User> results = jdbcTemplate.query(
+                "SELECT id, username, balance FROM users WHERE username = ? LIMIT 1",
+                new UserRowMapper(),
+                username);
 
         return results.stream().findFirst().orElse(null);
     }
@@ -39,7 +51,6 @@ public class UserDaoImpl implements UserDao {
             return User.builder()
                     .id(rs.getString("id"))
                     .username(rs.getString("username"))
-                    .password(rs.getString("password"))
                     .balance(rs.getBigDecimal("balance"))
                     .build();
         }

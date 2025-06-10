@@ -4,11 +4,13 @@ import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.domain.Transaction;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class TransactionDaoImpl implements TransactionDao {
 
     private final JdbcTemplate jdbcTemplate;
