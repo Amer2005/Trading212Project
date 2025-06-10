@@ -29,7 +29,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findOne(String id) {
         List<User> results = jdbcTemplate.query(
-                "SELECT id, username, balance FROM users WHERE id = ? LIMIT 1",
+                "SELECT id, username, balance FROM users WHERE id = CAST(? AS UUID) LIMIT 1",
                 new UserRowMapper(),
                 id);
 
@@ -54,6 +54,12 @@ public class UserDaoImpl implements UserDao {
                 (rs, rowNum) -> rs.getString("password"));
 
         return results.stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void udpate(User user) {
+        jdbcTemplate.update("UPDATE users SET username = ?, balance = ? WHERE id = CAST(? AS UUID)",
+        user.getUsername(), user.getBalance(), user.getId());
     }
 
     public static class UserRowMapper implements RowMapper<User> {

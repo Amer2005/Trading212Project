@@ -10,4 +10,6 @@ public interface UserDao {
     User findByUsername(String username);
 
     String findPassword(String id);
+
+    void udpate(User user);
 }
