@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -26,7 +27,7 @@ public class TransactionDaoImplTests {
 
     @Test
     public void testThatCreateTransactionGeneratesCorrectSQL() {
-        String userId = "GUID";
+        UUID userId = UUID.randomUUID();
         TransactionTypeEnum type = TransactionTypeEnum.BUY;
         String symbol = "AAPL";
         BigDecimal amount = new BigDecimal("10.00000000");

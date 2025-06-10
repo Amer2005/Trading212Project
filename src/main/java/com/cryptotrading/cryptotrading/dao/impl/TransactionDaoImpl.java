@@ -24,7 +24,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void create(Transaction transaction) {
         jdbcTemplate.update("INSERT INTO transactions (user_id, type, symbol, amount, price, total, transaction_time) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                UUID.fromString(transaction.getUserId()), transaction.getType().name(),
+               transaction.getUserId(), transaction.getType().name(),
                 transaction.getSymbol(), transaction.getAmount(), transaction.getPrice(),
                 transaction.getTotal(), transaction.getTransactionTime());
     }
@@ -42,8 +42,8 @@ public class TransactionDaoImpl implements TransactionDao {
     public static class TransactionRowMapper implements RowMapper<Transaction> {
         public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Transaction.builder()
-                    .id(rs.getString("id"))
-                    .userId(rs.getString("user_id"))
+                    .id(UUID.fromString(rs.getString("id")))
+                    .userId(UUID.fromString(rs.getString("user_id")))
                     .type(TransactionTypeEnum.valueOf(rs.getString("type")))
                     .symbol(rs.getString("symbol"))
                     .amount(rs.getBigDecimal("amount"))

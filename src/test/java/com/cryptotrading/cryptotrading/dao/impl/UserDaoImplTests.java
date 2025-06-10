@@ -28,7 +28,7 @@ public class UserDaoImplTests {
     @Test
     public void testThatCreateUserGeneratesCorrectSQL() {
 
-        String id = "GUID";
+        UUID id = UUID.randomUUID();
         String username = "John";
         String password = "HASH";
         BigDecimal balance = new BigDecimal(10000);
@@ -48,14 +48,14 @@ public class UserDaoImplTests {
 
     @Test
     public void testThatFindOneGeneratesTheCorrectSQL() {
-        String id = UUID.randomUUID().toString();
+        UUID id = UUID.randomUUID();
 
         userDao.findOne(id);
 
         verify(jdbcTemplate).query(
                 eq("SELECT id, username, balance FROM users WHERE id = ? LIMIT 1"),
                 ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),
-                eq(UUID.fromString(id))
+                eq(id)
         );
     }
 }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.UUID;
 
 @Component
 public class TransactionServiceImpl implements TransactionService {
@@ -33,7 +34,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction startTransaction(String userId, String symbol, TransactionTypeEnum type, BigDecimal total) {
+    public Transaction startTransaction(UUID userId, String symbol, TransactionTypeEnum type, BigDecimal total) {
 
         User user = userService.getUserById(userId);
 

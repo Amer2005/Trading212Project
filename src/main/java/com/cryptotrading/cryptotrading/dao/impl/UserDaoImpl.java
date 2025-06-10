@@ -28,11 +28,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findOne(String id) {
+    public User findOne(UUID id) {
         List<User> results = jdbcTemplate.query(
                 "SELECT id, username, balance FROM users WHERE id = ? LIMIT 1",
                 new UserRowMapper(),
-                UUID.fromString(id));
+                id);
 
         return results.stream().findFirst().orElse(null);
     }
@@ -48,13 +48,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public String findPassword(String id) {
-
-        UUID uuid = UUID.fromString(id);
-
+    public String findPassword(UUID id) {
         List<String> results = jdbcTemplate.query(
                 "SELECT password FROM users WHERE id = ? LIMIT 1",
-                new Object[]{uuid},
+                new Object[]{id},
                 (rs, rowNum) -> rs.getString("password"));
 
         return results.stream().findFirst().orElse(null);
@@ -63,13 +60,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void udpate(User user) {
         jdbcTemplate.update("UPDATE users SET username = ?, balance = ? WHERE id = ?",
-        user.getUsername(), user.getBalance(), UUID.fromString(user.getId()));
+        user.getUsername(), user.getBalance(), user.getId());
     }
 
     public static class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return User.builder()
-                    .id(rs.getString("id"))
+                    .id(UUID.fromString(rs.getString("id")))
                     .username(rs.getString("username"))
                     .balance(rs.getBigDecimal("balance"))
                     .build();

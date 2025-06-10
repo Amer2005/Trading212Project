@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +14,9 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     @Setter(AccessLevel.NONE)
-    private String id;
+    private UUID id;
 
-    private String userId;
+    private UUID userId;
 
     private TransactionTypeEnum type;
 

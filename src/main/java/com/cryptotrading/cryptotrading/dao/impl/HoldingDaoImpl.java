@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class HoldingDaoImpl implements HoldingDao {
@@ -38,8 +39,8 @@ public class HoldingDaoImpl implements HoldingDao {
     public static class HoldingRowMapper implements RowMapper<Holding> {
         public Holding mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Holding.builder()
-                    .id(rs.getString("id"))
-                    .userId(rs.getString("user_id"))
+                    .id(UUID.fromString(rs.getString("id")))
+                    .userId(UUID.fromString(rs.getString("user_id")))
                     .symbol(rs.getString("symbol"))
                     .amount(rs.getBigDecimal("amount"))
                     .build();

@@ -3,6 +3,7 @@ package com.cryptotrading.cryptotrading.domain;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -11,12 +12,11 @@ import java.math.BigDecimal;
 public class User {
 
     @Setter(AccessLevel.NONE)
-    private String id;
+    private UUID id;
 
     private String username;
 
     private String password;
 
     private BigDecimal balance;
-
 }

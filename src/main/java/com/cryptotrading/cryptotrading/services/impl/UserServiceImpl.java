@@ -6,6 +6,7 @@ import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void resetUser(String id) {
+    public void resetUser(UUID id) {
         User user = userDao.findOne(id);
 
         user.setBalance(STARTING_BALANCE);
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String id) {
+    public User getUserById(UUID id) {
         return  userDao.findOne(id);
     }
 
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void spendMoney(String id, BigDecimal amount) {
+    public void spendMoney(UUID id, BigDecimal amount) {
         User user = userDao.findOne(id);
 
         BigDecimal newBalance = user.getBalance().subtract(amount);

@@ -8,15 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionDto {
-    private String id;
+public class TransactionDto extends ResponseDto {
+    private UUID id;
 
-    private String userId;
+    private UUID userId;
 
     private TransactionTypeEnum type;
 

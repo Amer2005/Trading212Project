@@ -2,14 +2,16 @@ package com.cryptotrading.cryptotrading.dao;
 
 import com.cryptotrading.cryptotrading.domain.User;
 
+import java.util.UUID;
+
 public interface UserDao {
     void create(User user);
 
-    User findOne(String id);
+    User findOne(UUID id);
 
     User findByUsername(String username);
 
-    String findPassword(String id);
+    String findPassword(UUID id);
 
     void udpate(User user);
 }

@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -23,7 +24,7 @@ public class HoldingDaoImpltTests {
 
     @Test
     public void testThatCreateHoldingGeneratesCorrectSQL() {
-        String userId = "GUID";
+        UUID userId = UUID.randomUUID();
         String symbol = "BTC";
         BigDecimal amount = new BigDecimal("2.50000000");
 
