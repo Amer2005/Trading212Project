@@ -3,7 +3,9 @@ package com.cryptotrading.cryptotrading.services.impl;
 import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.domain.Transaction;
 import com.cryptotrading.cryptotrading.domain.User;
+import com.cryptotrading.cryptotrading.domain.dto.response.TransactionResponseDto;
 import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
+import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.CryptoPriceService;
 import com.cryptotrading.cryptotrading.services.TransactionService;
 import com.cryptotrading.cryptotrading.services.UserService;
@@ -23,23 +25,28 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionDao transactionDao;
 
-    public TransactionServiceImpl(UserService userService, CryptoPriceService cryptoPriceService, TransactionDao transactionDao) {
+    private final Mapper<Transaction, TransactionResponseDto> transactionResponseMapper;
+
+    public TransactionServiceImpl(UserService userService, CryptoPriceService cryptoPriceService, TransactionDao transactionDao, Mapper<Transaction, TransactionResponseDto> transactionResponseMapper) {
         this.userService = userService;
         this.cryptoPriceService = cryptoPriceService;
         this.transactionDao = transactionDao;
-    }
-
-    private Transaction createTransaction(Transaction transaction) {
-        return null;
+        this.transactionResponseMapper = transactionResponseMapper;
     }
 
     @Override
-    public Transaction startTransaction(UUID userId, String symbol, TransactionTypeEnum type, BigDecimal total) {
+    public TransactionResponseDto createTransaction(UUID userSession, String symbol, TransactionTypeEnum type, BigDecimal total) {
 
-        User user = userService.getUserById(userId);
+        TransactionResponseDto result = new TransactionResponseDto();
+
+        User user = userService.getUserBySession(userSession);
 
         if(user == null) {
-            return null;
+
+            result.setStatus(false);
+            result.setErrorMessage("User not found");
+
+            return result;
         }
 
         if(type == TransactionTypeEnum.BUY) {
@@ -47,24 +54,33 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         if(type == TransactionTypeEnum.SELL) {
-            //return createBuyTransaction(user, symbol, total);
+            //return createSellTransaction(user, symbol, total);
         }
 
-        return null;
+        result.setStatus(false);
+        result.setErrorMessage("Invalid transaction type");
+
+        return result;
     }
 
-    private Transaction createBuyTransaction(User user, String symbol, BigDecimal total) {
+    private TransactionResponseDto createBuyTransaction(User user, String symbol, BigDecimal total) {
+        TransactionResponseDto result = new TransactionResponseDto();
+
         BigDecimal price = cryptoPriceService.getPrice(symbol);
 
         BigDecimal balance = user.getBalance();
 
         if(total.compareTo(balance) == 1) {
-            return null;
+
+            result.setStatus(false);
+            result.setErrorMessage("Bought total exceeds user's balance!");
+
+            return result;
         }
 
         BigDecimal amount = total.divide(price, 8, RoundingMode.FLOOR);
 
-        userService.spendMoney(user.getId(), total);
+        userService.spendMoney(user.getSession(), total);
 
         Transaction transaction = Transaction.builder()
                 .userId(user.getId())
@@ -78,28 +94,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionDao.create(transaction);
 
-        return transaction;
+        result = transactionResponseMapper.mapTo(transaction);
+
+        return result;
     }
 
-    private Transaction createSellTransaction(User user, String symbol, BigDecimal total) {
-        BigDecimal price = cryptoPriceService.getPrice(symbol);
+    private TransactionResponseDto createSellTransaction(User user, String symbol, BigDecimal total) {
+        //TO DO
 
-        BigDecimal amount = total.divide(price, 8, RoundingMode.FLOOR);
-
-        userService.spendMoney(user.getId(), total);
-
-        Transaction transaction = Transaction.builder()
-                .userId(user.getId())
-                .type(TransactionTypeEnum.BUY)
-                .symbol(symbol)
-                .amount(amount)
-                .price(price)
-                .total(total)
-                .transactionTime(LocalDateTime.now(ZoneId.of("UTC")))
-                .build();
-
-        transactionDao.create(transaction);
-
-        return transaction;
+        return null;
     }
 }

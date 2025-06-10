@@ -22,18 +22,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void resetUser(UUID id) {
-        User user = userDao.findOne(id);
+    public void resetUser(UUID session) {
+        User user = getUserBySession(session);
 
         user.setBalance(STARTING_BALANCE);
 
-        userDao.udpate(user);
-        //TO DO: delete Holdings and Transactions
+        userDao.update(user);
     }
 
     @Override
     public User getUserById(UUID id) {
         return  userDao.findOne(id);
+    }
+
+    @Override
+    public User getUserBySession(UUID session)
+    {
+        return userDao.findBySession(session);
     }
 
     @Override
@@ -44,13 +49,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void spendMoney(UUID id, BigDecimal amount) {
-        User user = userDao.findOne(id);
+    public void spendMoney(UUID session, BigDecimal amount) {
+        User user = userDao.findBySession(session);
 
         BigDecimal newBalance = user.getBalance().subtract(amount);
 
         user.setBalance(newBalance);
 
-        userDao.udpate(user);
+        userDao.update(user);
     }
 }

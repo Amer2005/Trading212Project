@@ -2,27 +2,27 @@ package com.cryptotrading.cryptotrading.mappers.impl;
 
 
 import com.cryptotrading.cryptotrading.domain.User;
-import com.cryptotrading.cryptotrading.domain.dto.UserDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapperImpl implements Mapper<User, UserDto> {
+public class UserResponseMapperImpl implements Mapper<User, UserResponseDto> {
 
     private final ModelMapper modelMapper;
 
-    public UserMapperImpl(ModelMapper modelMapper) {
+    public UserResponseMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public UserDto mapTo(User user) {
-        return modelMapper.map(user, UserDto.class);
+    public UserResponseDto mapTo(User user) {
+        return modelMapper.map(user, UserResponseDto.class);
     }
 
     @Override
-    public User mapFrom(UserDto userDto) {
+    public User mapFrom(UserResponseDto userDto) {
         return modelMapper.map(userDto, User.class);
     }
 }

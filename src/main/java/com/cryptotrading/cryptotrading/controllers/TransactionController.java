@@ -1,7 +1,8 @@
 package com.cryptotrading.cryptotrading.controllers;
 
 import com.cryptotrading.cryptotrading.domain.Transaction;
-import com.cryptotrading.cryptotrading.domain.dto.TransactionDto;
+import com.cryptotrading.cryptotrading.domain.dto.request.TransactionCreateRequestDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.TransactionResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.TransactionService;
 import org.springframework.http.HttpHeaders;
@@ -15,28 +16,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    private final Mapper<Transaction, TransactionDto> transactionMapper;
+    private final Mapper<Transaction, TransactionResponseDto> transactionMapper;
 
-    public TransactionController(TransactionService transactionService, Mapper<Transaction, TransactionDto> transactionMapper) {
+    public TransactionController(TransactionService transactionService, Mapper<Transaction, TransactionResponseDto> transactionMapper) {
         this.transactionService = transactionService;
         this.transactionMapper = transactionMapper;
     }
 
     @PostMapping("/buy")
-    public ResponseEntity<TransactionDto> startBuyTransaction(@RequestBody TransactionDto transactionInfo) {
-        Transaction transaction = transactionService.startTransaction(transactionInfo.
-                getUserId(),
+    public ResponseEntity<TransactionResponseDto> startBuyTransaction(@RequestBody TransactionCreateRequestDto transactionInfo) {
+        TransactionResponseDto transaction = transactionService.createTransaction(transactionInfo.
+                getUserSession(),
                 transactionInfo.getSymbol(),
                 transactionInfo.getType(),
                 transactionInfo.getTotal());
 
-        if(transaction == null) {
+        if(!transaction.getStatus()) {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Error-During-Transaction", "An error has occurred during transaction");
+            headers.add("Error", transaction.getErrorMessage());
 
-            return new ResponseEntity<>(null, headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(transaction, headers, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(transactionMapper.mapTo(transaction), HttpStatus.CREATED);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 }

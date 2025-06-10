@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findOne(UUID id) {
         List<User> results = jdbcTemplate.query(
-                "SELECT id, username, balance FROM users WHERE id = ? LIMIT 1",
+                "SELECT id, username, balance, session FROM users WHERE id = ? LIMIT 1",
                 new UserRowMapper(),
                 id);
 
@@ -38,9 +38,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User findBySession(UUID session) {
+        List<User> results = jdbcTemplate.query(
+                "SELECT id, username, balance, session FROM users WHERE session = ? LIMIT 1",
+                new UserRowMapper(),
+                session);
+
+        return results.stream().findFirst().orElse(null);
+    }
+
+    @Override
     public User findByUsername(String username) {
         List<User> results = jdbcTemplate.query(
-                "SELECT id, username, balance FROM users WHERE username = ? LIMIT 1",
+                "SELECT id, username, balance, session FROM users WHERE username = ? LIMIT 1",
                 new UserRowMapper(),
                 username);
 
@@ -58,9 +68,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void udpate(User user) {
-        jdbcTemplate.update("UPDATE users SET username = ?, balance = ? WHERE id = ?",
-        user.getUsername(), user.getBalance(), user.getId());
+    public void update(User user) {
+        jdbcTemplate.update("UPDATE users SET username = ?, balance = ?, session = ? WHERE id = ?",
+        user.getUsername(), user.getBalance(), user.getSession(), user.getId());
     }
 
     public static class UserRowMapper implements RowMapper<User> {
@@ -69,6 +79,7 @@ public class UserDaoImpl implements UserDao {
                     .id(UUID.fromString(rs.getString("id")))
                     .username(rs.getString("username"))
                     .balance(rs.getBigDecimal("balance"))
+                    .session(UUID.fromString(rs.getString("session")))
                     .build();
         }
     }

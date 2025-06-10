@@ -1,7 +1,8 @@
 package com.cryptotrading.cryptotrading.controllers;
 
 import com.cryptotrading.cryptotrading.domain.User;
-import com.cryptotrading.cryptotrading.domain.dto.UserDto;
+import com.cryptotrading.cryptotrading.domain.dto.request.AuthRequestDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.AuthenticationService;
 import com.cryptotrading.cryptotrading.services.UserService;
@@ -20,43 +21,47 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final Mapper<User, UserDto> userMapper;
+    private final Mapper<User, UserResponseDto> userMapper;
 
-    public AuthController(AuthenticationService authenticationService, UserService userService, Mapper<User, UserDto> userMapper) {
+    public AuthController(AuthenticationService authenticationService, UserService userService, Mapper<User, UserResponseDto> userMapper) {
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.userMapper = userMapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userInfo) {
+    public ResponseEntity<UserResponseDto> registerUser(@RequestBody AuthRequestDto userInfo) {
 
-        boolean userExists = userService.doesUsernameExist(userInfo.getUsername());
+        UserResponseDto userResponse = new UserResponseDto();
 
-        if(userExists) {
+        userResponse = authenticationService.registerUser(userInfo.getUsername(), userInfo.getPassword());
+
+        if(!userResponse.getStatus())
+        {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Repeating-Username-Error", "Username already exists");
+            headers.add("Error", userResponse.getErrorMessage());
 
             return new ResponseEntity<>(null, headers, HttpStatus.BAD_REQUEST);
         }
 
-        User UserEntity = authenticationService.registerUser(userInfo.getUsername(), userInfo.getPassword());
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
 
-        return new ResponseEntity<>(userMapper.mapTo(UserEntity), HttpStatus.CREATED);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userInfo) {
+    public ResponseEntity<UserResponseDto> loginUser(@RequestBody AuthRequestDto userInfo) {
 
-        User UserEntity = authenticationService.loginUser(userInfo.getUsername(), userInfo.getPassword());
+        UserResponseDto userResponseDto = new UserResponseDto();
 
-        if(UserEntity == null) {
+        userResponseDto = authenticationService.loginUser(userInfo.getUsername(), userInfo.getPassword());
+
+        if(!userResponseDto.getStatus()) {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Invalid-Login-Error", "Wrong username or password");
+            headers.add("Error", userResponseDto.getErrorMessage());
 
-            return new ResponseEntity<>(null, headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(userResponseDto, headers, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userMapper.mapTo(UserEntity), HttpStatus.OK);
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 }

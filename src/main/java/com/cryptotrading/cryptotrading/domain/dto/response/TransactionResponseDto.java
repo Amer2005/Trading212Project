@@ -1,20 +1,18 @@
-package com.cryptotrading.cryptotrading.domain.dto;
+package com.cryptotrading.cryptotrading.domain.dto.response;
 
 import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionDto extends ResponseDto {
+public class TransactionResponseDto extends ResponseDto {
     private UUID id;
 
     private UUID userId;

@@ -1,14 +1,15 @@
-package com.cryptotrading.cryptotrading.domain.dto;
+package com.cryptotrading.cryptotrading.domain.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class ResponseDto {
-    private Boolean status;
+    private Boolean status = true;
 
     private String errorMessage;
 }

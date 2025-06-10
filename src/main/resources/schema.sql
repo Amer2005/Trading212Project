@@ -8,7 +8,8 @@ CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         username VARCHAR(50) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
-        balance NUMERIC(18, 8) NOT NULL DEFAULT 10000
+        balance NUMERIC(18, 8) NOT NULL DEFAULT 10000,
+        session UUID DEFAULT uuid_generate_v4()
 );
 
 CREATE TABLE holdings (

@@ -2,6 +2,8 @@ package com.cryptotrading.cryptotrading.services.impl;
 
 import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
+import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
+import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.AuthenticationService;
 import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.stereotype.Component;
@@ -17,13 +19,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserService userService;
 
-    public AuthenticationServiceImpl(UserDao userDao, UserService userService) {
+    private final Mapper<User, UserResponseDto> userMapper;
+
+    public AuthenticationServiceImpl(UserDao userDao, UserService userService, Mapper<User, UserResponseDto> userMapper) {
         this.userDao = userDao;
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public User registerUser(String username, String password) {
+    public UserResponseDto registerUser(String username, String password) {
+
+        UserResponseDto result = new UserResponseDto();
+
+        if(userService.doesUsernameExist(username))
+        {
+            result.setStatus(false);
+
+            result.setErrorMessage("User with that username already exists!");
+
+            return result;
+        }
 
         User newUser = User.builder()
                 .username(username)
@@ -34,13 +50,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User createdUser = userDao.findByUsername(username);
 
-        return createdUser;
+        return userMapper.mapTo(createdUser);
     }
 
     @Override
-    public User loginUser(String username, String password) {
+    public UserResponseDto loginUser(String username, String password) {
+        UserResponseDto result = new UserResponseDto();
+
         if(!userService.doesUsernameExist(username)) {
-            return null;
+
+            result.setStatus(false);
+            result.setErrorMessage("Wrong username or password!");
+
+            return result;
         }
 
         User user = userDao.findByUsername(username);
@@ -48,10 +70,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String DBPassword = userDao.findPassword(user.getId());
 
         if(DBPassword.equals(password)){
-            return user;
+            return userMapper.mapTo(user);
         }
         else {
-            return null;
+            result.setStatus(false);
+            result.setErrorMessage("Wrong username or password!");
+
+            return result;
         }
     }
 }
