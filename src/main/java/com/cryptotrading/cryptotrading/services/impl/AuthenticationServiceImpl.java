@@ -33,4 +33,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return createdUser;
     }
+
+    @Override
+    public User loginUser(String username, String password) {
+        User user = userDao.findByUsername(username);
+
+        String DBPassword = userDao.findPassword(user.getId());
+
+        if(DBPassword.equals(password)){
+            return user;
+        }
+        else {
+            return null;
+        }
+    }
 }

@@ -46,6 +46,16 @@ public class UserDaoImpl implements UserDao {
         return results.stream().findFirst().orElse(null);
     }
 
+    @Override
+    public String findPassword(String id) {
+        List<String> results = jdbcTemplate.query(
+                "SELECT password FROM users WHERE id = CAST(? AS UUID) LIMIT 1",
+                new Object[]{id},
+                (rs, rowNum) -> rs.getString("password"));
+
+        return results.stream().findFirst().orElse(null);
+    }
+
     public static class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return User.builder()
