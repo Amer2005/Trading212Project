@@ -29,4 +29,11 @@ public class UserServiceImpl implements UserService {
         userDao.udpate(user);
         //TO DO: delete Holdings and Transactions
     }
+
+    @Override
+    public boolean doesUsernameExist(String username) {
+        User user = userDao.findByUsername(username);
+
+        return user != null;
+    }
 }

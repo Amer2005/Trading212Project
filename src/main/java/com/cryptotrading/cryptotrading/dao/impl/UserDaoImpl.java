@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UserDaoImpl implements UserDao {
@@ -29,9 +30,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findOne(String id) {
         List<User> results = jdbcTemplate.query(
-                "SELECT id, username, balance FROM users WHERE id = CAST(? AS UUID) LIMIT 1",
+                "SELECT id, username, balance FROM users WHERE id = ? LIMIT 1",
                 new UserRowMapper(),
-                id);
+                UUID.fromString(id));
 
         return results.stream().findFirst().orElse(null);
     }
@@ -48,9 +49,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public String findPassword(String id) {
+
+        UUID uuid = UUID.fromString(id);
+
         List<String> results = jdbcTemplate.query(
-                "SELECT password FROM users WHERE id = CAST(? AS UUID) LIMIT 1",
-                new Object[]{id},
+                "SELECT password FROM users WHERE id = ? LIMIT 1",
+                new Object[]{uuid},
                 (rs, rowNum) -> rs.getString("password"));
 
         return results.stream().findFirst().orElse(null);
@@ -58,8 +62,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void udpate(User user) {
-        jdbcTemplate.update("UPDATE users SET username = ?, balance = ? WHERE id = CAST(? AS UUID)",
-        user.getUsername(), user.getBalance(), user.getId());
+        jdbcTemplate.update("UPDATE users SET username = ?, balance = ? WHERE id = ?",
+        user.getUsername(), user.getBalance(), UUID.fromString(user.getId()));
     }
 
     public static class UserRowMapper implements RowMapper<User> {
