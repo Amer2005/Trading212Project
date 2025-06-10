@@ -1,6 +1,7 @@
 package com.cryptotrading.cryptotrading.dao.impl;
 
 import com.cryptotrading.cryptotrading.domain.Transaction;
+import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ public class TransactionDaoImplTests {
     @Test
     public void testThatCreateTransactionGeneratesCorrectSQL() {
         String userId = "GUID";
-        String type = "BUY";
+        TransactionTypeEnum type = TransactionTypeEnum.BUY;
         String symbol = "AAPL";
         BigDecimal amount = new BigDecimal("10.00000000");
         BigDecimal price = new BigDecimal("150.00000000");
@@ -47,6 +48,6 @@ public class TransactionDaoImplTests {
 
         verify(jdbcTemplate).update(eq(
                         "INSERT INTO transactions (user_id, type, symbol, amount, price, total, transaction_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
-                eq(userId), eq(type), eq(symbol), eq(amount), eq(price), eq(total), eq(transactionTime));
+                eq(userId), eq(type.name()), eq(symbol), eq(amount), eq(price), eq(total), eq(transactionTime));
     }
 }

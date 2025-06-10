@@ -1,7 +1,10 @@
-package com.cryptotrading.cryptotrading.domain;
+package com.cryptotrading.cryptotrading.domain.dto;
 
 import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,9 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Transaction {
-
-    @Setter(AccessLevel.NONE)
+public class TransactionDto {
     private String id;
 
     private String userId;

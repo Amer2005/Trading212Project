@@ -31,9 +31,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(String id) {
+        return  userDao.findOne(id);
+    }
+
+    @Override
     public boolean doesUsernameExist(String username) {
         User user = userDao.findByUsername(username);
 
         return user != null;
+    }
+
+    @Override
+    public void spendMoney(String id, BigDecimal amount) {
+        User user = userDao.findOne(id);
+
+        BigDecimal newBalance = user.getBalance().subtract(amount);
+
+        user.setBalance(newBalance);
+
+        userDao.udpate(user);
     }
 }

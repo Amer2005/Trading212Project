@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -47,14 +48,14 @@ public class UserDaoImplTests {
 
     @Test
     public void testThatFindOneGeneratesTheCorrectSQL() {
-        String id = "GUID";
+        String id = UUID.randomUUID().toString();
 
         userDao.findOne(id);
 
         verify(jdbcTemplate).query(
                 eq("SELECT id, username, balance FROM users WHERE id = ? LIMIT 1"),
                 ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),
-                eq(id)
+                eq(UUID.fromString(id))
         );
     }
 }
