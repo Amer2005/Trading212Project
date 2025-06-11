@@ -1,0 +1,40 @@
+table {
+    width: 80%;
+    margin: 2em auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 1em;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+button {
+    padding: 0.5em 1em;
+    margin: 0 0.25em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buybtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.sellbtn {
+    background-color: #f44336;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
