@@ -8,6 +8,7 @@ import com.cryptotrading.cryptotrading.services.AuthenticationService;
 import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,11 +42,20 @@ public class AuthController {
             return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        ResponseCookie cookie = ResponseCookie.from("SESSIONID", userResponse.getSession().toString())
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("None")
+                .build();
 
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(userResponse);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<UserResponseDto> loginUser(@RequestBody AuthRequestDto userInfo) {
 
         UserResponseDto userResponseDto = new UserResponseDto();
@@ -53,12 +63,19 @@ public class AuthController {
         userResponseDto = authenticationService.loginUser(userInfo.getUsername(), userInfo.getPassword());
 
         if(!userResponseDto.getStatus()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Error", userResponseDto.getErrorMessage());
-
-            return new ResponseEntity<>(userResponseDto, headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(userResponseDto, HttpStatus.UNAUTHORIZED);
         }
 
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+        ResponseCookie cookie = ResponseCookie.from("SESSIONID", userResponseDto.getSession().toString())
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("None")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(userResponseDto);
     }
 }

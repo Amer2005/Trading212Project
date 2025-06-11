@@ -4,7 +4,7 @@ import useKrakenWS from '../hooks/useKrakenWS'
 function TopCrypto(props) {
 
     const symbolNames = {
-        XBT: "Bitcoin",
+        BTC: "Bitcoin",
         ETH: "Ethereum",
         USDT: "Tether",
         XRP: "XRP",
@@ -28,14 +28,11 @@ function TopCrypto(props) {
 
     const cryptoData = useKrakenWS();
 
-    const sortedData = Object.entries(cryptoData).sort(([, priceA], [, priceB]) => {
-        return parseFloat(priceB) - parseFloat(priceA);
-    });
-
-    const cryptosList = sortedData.map(([pair, price]) => {
-        const symbol = pair.split("/")[0];
+    const cryptoList = Object.keys(cryptoData).map((symbolKey) => {
+        const symbol = symbolKey.split("/")[0];
         const name = symbolNames[symbol] || symbol;
-
+        const price = cryptoData[symbolKey];
+        
         return (<>
             <tr key={symbol}>
                 <td>{name}</td>
@@ -47,8 +44,7 @@ function TopCrypto(props) {
                 </td>
             </tr>
         </>);
-    }
-    )
+    })
 
     return (
         <>
@@ -62,7 +58,7 @@ function TopCrypto(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {cryptosList}
+                    {cryptoList}
                 </tbody>
             </table>
         </>
