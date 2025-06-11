@@ -15,4 +15,6 @@ public interface UserService {
     boolean doesUsernameExist(String username);
 
     void spendMoney(UUID session, BigDecimal amount);
+
+    void getMoney(UUID session, BigDecimal amount);
 }

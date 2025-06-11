@@ -2,6 +2,7 @@ package com.cryptotrading.cryptotrading.dao.impl;
 
 import com.cryptotrading.cryptotrading.dao.HoldingDao;
 import com.cryptotrading.cryptotrading.domain.Holding;
+import com.cryptotrading.cryptotrading.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -27,13 +28,34 @@ public class HoldingDaoImpl implements HoldingDao {
     }
 
     @Override
-    public Holding findOne(String id) {
+    public Holding findOne(UUID id) {
         List<Holding> result = jdbcTemplate.query(
                 "SELECT * FROM holdings WHERE id = ? LIMIT 1",
                 new HoldingRowMapper(),
                 id);
 
-        return null;
+        return result.stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void update(Holding holding) {
+        jdbcTemplate.update("UPDATE holdings SET user_id = ?, symbol = ?, amount = ? WHERE id = ?",
+                holding.getUserId(), holding.getSymbol(), holding.getAmount(), holding.getId());
+    }
+
+    public Holding findByUserIdAndSymbol(UUID userId, String symbol) {
+        List<Holding> result = jdbcTemplate.query(
+                "SELECT * FROM holdings WHERE user_id = ? AND symbol = ? LIMIT 1",
+                new HoldingRowMapper(),
+                userId, symbol);
+
+        return result.stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void delete(UUID id)
+    {
+        jdbcTemplate.update("DELETE FROM holdings WHERE id = ?", id);
     }
 
     public static class HoldingRowMapper implements RowMapper<Holding> {

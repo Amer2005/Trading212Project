@@ -29,13 +29,10 @@ public class TransactionController {
                 getUserSession(),
                 transactionInfo.getSymbol(),
                 transactionInfo.getType(),
-                transactionInfo.getTotal());
+                transactionInfo.getAmount());
 
         if(!transaction.getStatus()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Error", transaction.getErrorMessage());
-
-            return new ResponseEntity<>(transaction, headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(transaction, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);

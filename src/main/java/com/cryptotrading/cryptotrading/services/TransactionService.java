@@ -8,5 +8,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface TransactionService {
-    TransactionResponseDto createTransaction(UUID userSession, String symbol, TransactionTypeEnum type, BigDecimal total);
+    TransactionResponseDto createTransaction(UUID userSession, String symbol, TransactionTypeEnum type, BigDecimal amount);
+
+    void deleteTransaction(UUID id);
 }

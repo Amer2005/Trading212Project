@@ -9,6 +9,7 @@ import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Component
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -70,6 +71,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String DBPassword = userDao.findPassword(user.getId());
 
         if(DBPassword.equals(password)){
+
+            user.setSession(UUID.randomUUID());
+
+            userDao.update(user);
+
             return userMapper.mapTo(user);
         }
         else {

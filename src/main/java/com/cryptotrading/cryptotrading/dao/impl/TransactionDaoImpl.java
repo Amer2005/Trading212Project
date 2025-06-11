@@ -30,13 +30,19 @@ public class TransactionDaoImpl implements TransactionDao {
     }
 
     @Override
-    public Transaction findOne(String id) {
+    public Transaction findOne(UUID id) {
         List<Transaction> result = jdbcTemplate.query(
                     "SELECT * FROM transactions WHERE id = ? LIMIT 1",
                         new TransactionRowMapper(),
                         id);
 
         return result.stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void delete(UUID id)
+    {
+        jdbcTemplate.update("DELETE FROM transactions WHERE id = ?", id);
     }
 
     public static class TransactionRowMapper implements RowMapper<Transaction> {
@@ -53,4 +59,6 @@ public class TransactionDaoImpl implements TransactionDao {
                     .build();
         }
     }
+
+
 }

@@ -38,10 +38,7 @@ public class AuthController {
 
         if(!userResponse.getStatus())
         {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Error", userResponse.getErrorMessage());
-
-            return new ResponseEntity<>(null, headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
@@ -59,7 +56,7 @@ public class AuthController {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Error", userResponseDto.getErrorMessage());
 
-            return new ResponseEntity<>(userResponseDto, headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(userResponseDto, headers, HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);

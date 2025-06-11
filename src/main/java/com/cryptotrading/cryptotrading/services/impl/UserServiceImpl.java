@@ -1,5 +1,6 @@
 package com.cryptotrading.cryptotrading.services.impl;
 
+import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
 import com.cryptotrading.cryptotrading.services.UserService;
@@ -53,6 +54,17 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findBySession(session);
 
         BigDecimal newBalance = user.getBalance().subtract(amount);
+
+        user.setBalance(newBalance);
+
+        userDao.update(user);
+    }
+
+    @Override
+    public void getMoney(UUID session, BigDecimal amount) {
+        User user = userDao.findBySession(session);
+
+        BigDecimal newBalance = user.getBalance().add(amount);
 
         user.setBalance(newBalance);
 

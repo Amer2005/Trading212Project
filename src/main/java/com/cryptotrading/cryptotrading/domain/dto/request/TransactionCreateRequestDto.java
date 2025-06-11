@@ -18,5 +18,5 @@ public class TransactionCreateRequestDto extends RequestDto {
 
     private String symbol;
 
-    private BigDecimal total;
+    private BigDecimal amount;
 }
