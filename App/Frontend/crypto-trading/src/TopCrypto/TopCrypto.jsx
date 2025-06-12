@@ -1,32 +1,9 @@
 import styles from './TopCrypto.module.css'
 import useKrakenWS from '../hooks/useKrakenWS'
+import { symbolNames } from '../config'
 
 function TopCrypto(props) {
-
-    const symbolNames = {
-        BTC: "Bitcoin",
-        ETH: "Ethereum",
-        USDT: "Tether",
-        XRP: "XRP",
-        BNB: "BNB",
-        SOL: "Solana",
-        USDC: "USD Coin",
-        DOGE: "Dogecoin",
-        TRX: "TRON",
-        ADA: "Cardano",
-        STETH: "Lido Staked Ether",
-        HYPE: "Hyperliquid",
-        WBTC: "Wrapped Bitcoin",
-        WSTETH: "Wrapped stETH",
-        SUI: "Sui",
-        LINK: "Chainlink",
-        AVAX: "Avalanche",
-        XLM: "Stellar",
-        BCH: "Bitcoin Cash",
-        LEO: "LEO Token"
-    };
-
-    const cryptoData = useKrakenWS();
+    const cryptoData = props.cryptoData;
 
     const cryptoList = Object.keys(cryptoData).map((symbolKey) => {
         const symbol = symbolKey.split("/")[0];

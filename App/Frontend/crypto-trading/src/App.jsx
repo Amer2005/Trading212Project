@@ -1,32 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './Header.jsx'
+import { BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import useKrakenWS from './hooks/useKrakenWS'
+import Layout from './Layout.jsx'
 import Footer from './Footer.jsx'
 import TopCrypto from './TopCrypto/TopCrypto.jsx'
 import Login from './Login/Login.jsx'
+import Register from './Register/Register.jsx'
 
 function App() {
-
-
+  const cryptoData = useKrakenWS();
 
   return (
     <>
-      <Header isLoggedIn={false} />
 
-      <Router>
+      <BrowserRouter>
         <Routes>
-          <Route path="*" element={
-            <>
-              <TopCrypto />
-            </>
-          } />
+          <Route element={<Layout isLoggedIn={false} />}>
 
-          <Route path="/login" element={
-            <>
-              <Login/>
-            </>
-          } />
+            <Route path="/" element={<TopCrypto cryptoData={cryptoData} />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/Register" element={<Register />} />
+
+            <Route path="*" element={<div>404 Not Found</div>} />
+
+          </Route>
         </Routes>
-      </Router>
+      </BrowserRouter>
 
       <Footer />
     </>

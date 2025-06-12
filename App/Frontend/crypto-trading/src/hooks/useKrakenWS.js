@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { connectKrakenSocket } from "./krakenSocket";
-import { getAssetNames } from '../services/krakenRest';
-
 const defaultPairs = [
     "BTC/USD",
     "ETH/USD",

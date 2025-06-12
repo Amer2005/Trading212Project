@@ -1,12 +1,14 @@
+import { Link } from 'react-router-dom';
+
 function Header(props) {
 
     if (props.isLoggedIn) {
         return (
             <header>
                 <nav>
-                    <a href="#home">Home</a>
-                    <a href="#holdings">Holdings</a>
-                    <a href="#transactions">Transactions</a>
+                    <Link className="" to="/">Home</Link>
+                    <Link className="" to="/Holdings">Holdings</Link>
+                    <Link className="" to="/Transactions">Transactions</Link>
                 </nav>
 
                 <div style={{ color: 'white', fontWeight: 'bold' }}>
@@ -20,15 +22,16 @@ function Header(props) {
     return (
         <header>
             <nav>
-                <a href="/">Home</a>
+                <Link className="" to="/">Home</Link>
             </nav>
 
             <div>
-                <a className="auth" href="/login">Login</a>
-                <a className="auth" href="#register">Register</a>
+                <Link className="auth" to="/login">Login</Link>
+                <Link className="auth" to="/register">Register</Link>
             </div>
 
         </header>
+
     )
 }
 

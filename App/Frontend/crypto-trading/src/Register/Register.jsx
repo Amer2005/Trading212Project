@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { login } from '../services/authService'
+import { register } from '../services/authService'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Register() {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setrepeatPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -18,15 +19,20 @@ function Login() {
       return;
     }
 
+    if (repeatPassword !== password) {
+      toast.error('Passwords do not match!');
+      return;
+    }
+
     try {
-      const result = await login(username, password);
+      const result = await register(username, password);
 
       if (result.status === true) {
-        toast.success('Login successful!');
+        toast.success('Register successful!');
 
         navigate('/');
       } else {
-        toast.error(result.errorMessage || 'Login failed. Please try again.');
+        toast.error(result.errorMessage || 'Register failed. Please try again.');
       }
     } catch (err) {
       toast.error('An unexpected error occurred. Please try again later.');
@@ -36,7 +42,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Login</h2>
+        <h2>Register</h2>
         <form onSubmit={handleSubmit} className="login-form">
           <div>
             <label htmlFor="username">Username</label>
@@ -58,6 +64,16 @@ function Login() {
             />
           </div>
 
+          <div>
+            <label htmlFor="password">Repeat Password</label>
+            <input
+              id="repeatPassword"
+              type="password"
+              value={repeatPassword}
+              onChange={(e) => setrepeatPassword(e.target.value)}
+            />
+          </div>
+
           <button type="submit" className="login-button">
             Log In
           </button>
@@ -69,4 +85,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
