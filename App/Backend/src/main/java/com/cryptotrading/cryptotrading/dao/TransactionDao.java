@@ -11,4 +11,6 @@ public interface TransactionDao {
     Transaction findOne(UUID id);
 
     void delete(UUID id);
+
+    void deleteUserTransactions(UUID userId);
 }

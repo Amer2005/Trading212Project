@@ -169,4 +169,9 @@ public class TransactionServiceImpl implements TransactionService {
     {
         transactionDao.delete(id);
     }
+
+    @Override
+    public void deleteUserTransactions(UUID userId) {
+        transactionDao.deleteUserTransactions(userId);
+    }
 }

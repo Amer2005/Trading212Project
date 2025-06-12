@@ -74,7 +74,7 @@ function App() {
 
             <Route path="/login" element={<Login fetchUser={fetchUser}/>} />
             
-            <Route path="/Register" element={<Login fetchUser={fetchUser}/>} />
+            <Route path="/Register" element={<Register fetchUser={fetchUser}/>} />
 
             <Route path="/Transaction" element={<Transaction 
             cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />

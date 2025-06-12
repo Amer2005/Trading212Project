@@ -22,3 +22,24 @@ export const symbolNames = {
         BCH: "Bitcoin Cash",
         LEO: "LEO Token"
     };
+
+export const defaultPairs = [
+    "BTC/USD",
+    "ETH/USD",
+    "USDT/USD",
+    "XRP/USD",
+    "BNB/USD",
+    "SOL/USD",
+    "USDC/USD",
+    "DOGE/USD",
+    "TRX/USD",
+    "ADA/USD",
+    "STETH/USD",
+    "HYPE/USD",
+    "WBTC/USD",
+    "WSTETH/USD",
+    "SUI/USD",
+    "LINK/USD",
+    "AVAX/USD",
+    "XLM/USD",
+    "BCH/USD"];

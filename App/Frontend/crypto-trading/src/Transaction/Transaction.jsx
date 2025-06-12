@@ -154,7 +154,7 @@ function Transaction(props) {
                 Confirm Transaction
             </button>
 
-            <ToastContainer />
+            <ToastContainer position="top-center"/>
         </div>
     </div>
     );

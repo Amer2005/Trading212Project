@@ -11,4 +11,6 @@ public interface TransactionService {
     TransactionResponseDto createTransaction(UUID userSession, String symbol, TransactionTypeEnum type, BigDecimal amount);
 
     void deleteTransaction(UUID id);
+
+    void deleteUserTransactions(UUID userId);
 }
