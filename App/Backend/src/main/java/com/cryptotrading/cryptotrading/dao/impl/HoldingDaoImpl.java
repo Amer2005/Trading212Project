@@ -58,6 +58,12 @@ public class HoldingDaoImpl implements HoldingDao {
         jdbcTemplate.update("DELETE FROM holdings WHERE id = ?", id);
     }
 
+    @Override
+    public void deleteUserHoldings(UUID userId)
+    {
+        jdbcTemplate.update("DELETE FROM holdings WHERE user_id = ?", userId);
+    }
+
     public static class HoldingRowMapper implements RowMapper<Holding> {
         public Holding mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Holding.builder()

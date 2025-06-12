@@ -9,7 +9,6 @@ function Profile(props) {
   let userData = props.user;
 
   const resetProfile = async () => {
-    console.log("resseting");
     const res = await fetch(API_BASE_URL + '/reset', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

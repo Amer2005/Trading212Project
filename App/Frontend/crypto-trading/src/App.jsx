@@ -73,8 +73,12 @@ function App() {
             <Route path="/" element={<TopCrypto cryptoData={cryptoData} />} />
 
             <Route path="/login" element={<Login fetchUser={fetchUser}/>} />
+            
             <Route path="/Register" element={<Register />} />
-            <Route path="/Transaction" element={<Transaction />} />
+
+            <Route path="/Transaction" element={<Transaction 
+            cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
+
             <Route path="/Profile" element={<Profile isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
 
             <Route path="*" element={<div>404 Not Found</div>} />

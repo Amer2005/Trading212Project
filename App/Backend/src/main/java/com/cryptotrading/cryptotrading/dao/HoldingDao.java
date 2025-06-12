@@ -14,4 +14,6 @@ public interface HoldingDao {
     Holding findByUserIdAndSymbol(UUID userId, String symbol);
 
     void delete(UUID id);
+
+    void deleteUserHoldings(UUID userId);
 }

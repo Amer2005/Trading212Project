@@ -117,6 +117,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         BigDecimal price = cryptoPriceService.getPrice(symbol);
 
+        if(price.compareTo(BigDecimal.ZERO) <= 0) {
+            result.setStatus(false);
+            result.setErrorMessage("Crypto not found");
+
+            return result;
+        }
+
         Holding currentHolding = holdingService.getByUserIdAndSmybol(user.getId(), symbol);
 
         if(currentHolding == null)
@@ -130,6 +137,8 @@ public class TransactionServiceImpl implements TransactionService {
         if(currentHolding.getAmount().compareTo(amount) == -1) {
             result.setStatus(false);
             result.setErrorMessage("User does not have enough " + symbol);
+
+            return  result;
         }
 
         BigDecimal total = amount.multiply(price);

@@ -55,12 +55,20 @@ public class HoldingServiceImpl implements HoldingService {
 
         holding.setAmount(newAmount);
 
+        holding.setAmount(newAmount);
+
         holdingDao.update(holding);
     }
 
     @Override
     public Holding getByUserIdAndSmybol(UUID userId, String symbol) {
         return holdingDao.findByUserIdAndSymbol(userId, symbol);
+    }
+
+    @Override
+    public void deleteUserHoldings(UUID userId)
+    {
+        holdingDao.deleteUserHoldings(userId);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
 import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
+import com.cryptotrading.cryptotrading.services.HoldingService;
 import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +19,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
+    private final HoldingService holdingService;
+
     private final Mapper<User, UserResponseDto> userMapper;
 
-    public UserServiceImpl(UserDao userDao, Mapper<User, UserResponseDto> userMapper) {
+    public UserServiceImpl(UserDao userDao, HoldingService holdingService, Mapper<User, UserResponseDto> userMapper) {
         this.userDao = userDao;
+        this.holdingService = holdingService;
         this.userMapper = userMapper;
     }
 
@@ -30,6 +34,8 @@ public class UserServiceImpl implements UserService {
         User user = getUserBySession(session);
 
         user.setBalance(STARTING_BALANCE);
+
+        holdingService.deleteUserHoldings(user.getId());
 
         userDao.update(user);
     }
@@ -46,8 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getUserDtoBySession(UUID session)
-    {
+    public UserResponseDto getUserDtoBySession(UUID session) {
         User user = userDao.findBySession(session);
         UserResponseDto result = new UserResponseDto();
 
