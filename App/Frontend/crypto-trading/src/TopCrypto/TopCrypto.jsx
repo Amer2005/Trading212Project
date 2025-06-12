@@ -1,6 +1,7 @@
 import styles from './TopCrypto.module.css'
 import useKrakenWS from '../hooks/useKrakenWS'
 import { symbolNames } from '../config'
+import { Link } from 'react-router-dom'
 
 function TopCrypto(props) {
     const cryptoData = props.cryptoData;
@@ -16,8 +17,8 @@ function TopCrypto(props) {
                 <td>{symbol}</td>
                 <td>${price}</td>
                 <td>
-                    <button className={styles.buybtn}>Buy</button>
-                    <button className={styles.sellbtn}>Sell</button>
+                    <Link className={styles.buybtn} to="/Transaction">Buy</Link>
+                    <Link className={styles.sellbtn} to="/Transaction">Sell</Link>
                 </td>
             </tr>
         </>);

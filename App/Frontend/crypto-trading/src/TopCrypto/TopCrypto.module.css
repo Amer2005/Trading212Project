@@ -17,12 +17,17 @@ th {
 }
 
 
-button {
+a {
     padding: 0.5em 1em;
     margin: 0 0.25em;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    opacity: 80%;
 }
 
 .buybtn {

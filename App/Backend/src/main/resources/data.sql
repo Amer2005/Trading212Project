@@ -1,5 +1,6 @@
-INSERT INTO users (username, password)
+INSERT INTO users (username, password, balance)
 VALUES (                    -- generates a random UUID
-           'John Doe',                             -- username
-           'John'                             -- default balance
+    'John Doe',                             -- username
+    'John',
+    5000
        );

@@ -15,19 +15,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-    private final UserService userService;
-
-    private final Mapper<User, UserResponseDto> userMapper;
-
-    public AuthController(AuthenticationService authenticationService, UserService userService, Mapper<User, UserResponseDto> userMapper) {
+    public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.userService = userService;
-        this.userMapper = userMapper;
+    }
+
+    private ResponseCookie SetSeesionCookie(UUID session)
+    {
+        ResponseCookie cookie = ResponseCookie.from("SESSIONID", session.toString())
+                .httpOnly(false)
+                .secure(true)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("Lax")
+                .build();
+
+        return cookie;
     }
 
     @PostMapping("/register")
@@ -42,13 +51,7 @@ public class AuthController {
             return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
         }
 
-        ResponseCookie cookie = ResponseCookie.from("SESSIONID", userResponse.getSession().toString())
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .sameSite("None")
-                .build();
+        ResponseCookie cookie = SetSeesionCookie(userResponse.getSession());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -66,13 +69,7 @@ public class AuthController {
             return new ResponseEntity<>(userResponseDto, HttpStatus.UNAUTHORIZED);
         }
 
-        ResponseCookie cookie = ResponseCookie.from("SESSIONID", userResponseDto.getSession().toString())
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .sameSite("None")
-                .build();
+        ResponseCookie cookie = SetSeesionCookie(userResponseDto.getSession());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())

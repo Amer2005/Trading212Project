@@ -3,6 +3,8 @@ package com.cryptotrading.cryptotrading.services.impl;
 import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
+import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
+import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    private final Mapper<User, UserResponseDto> userMapper;
+
+    public UserServiceImpl(UserDao userDao, Mapper<User, UserResponseDto> userMapper) {
         this.userDao = userDao;
+        this.userMapper = userMapper;
     }
-
-
 
     @Override
     public void resetUser(UUID session) {
@@ -40,6 +43,27 @@ public class UserServiceImpl implements UserService {
     public User getUserBySession(UUID session)
     {
         return userDao.findBySession(session);
+    }
+
+    @Override
+    public UserResponseDto getUserDtoBySession(UUID session)
+    {
+        User user = userDao.findBySession(session);
+        UserResponseDto result = new UserResponseDto();
+
+        if(user == null)
+        {
+            result.setStatus(false);
+            result.setErrorMessage("User not found");
+
+            return result;
+        }
+
+        result = userMapper.mapTo(userDao.findBySession(session));
+
+
+
+        return result;
     }
 
     @Override

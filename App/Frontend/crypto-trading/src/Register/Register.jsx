@@ -30,6 +30,8 @@ function Register() {
       if (result.status === true) {
         toast.success('Register successful!');
 
+        await props.fetchUser();
+
         navigate('/');
       } else {
         toast.error(result.errorMessage || 'Register failed. Please try again.');

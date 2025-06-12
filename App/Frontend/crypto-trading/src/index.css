@@ -116,3 +116,156 @@ nav a:hover {
 .login-button:hover {
   background-color: #2563eb;
 }
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-container h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-details {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-field {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+}
+
+.field-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.field-value {
+  color: #333;
+}
+
+.reset-button {
+  color: white;
+  background-color: #ef4444;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 15px;
+  
+}
+
+.crypto-transaction-wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.crypto-transaction-title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-size: 24px;
+}
+
+.crypto-transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.crypto-transaction-type-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crypto-transaction-label {
+  font-weight: 600;
+  color: #34495e;
+  font-size: 14px;
+}
+
+.crypto-transaction-toggle-container {
+  display: flex;
+  gap: 10px;
+}
+
+.crypto-transaction-toggle-btn {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #d6d6d6;
+  background-color: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.crypto-transaction-toggle-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.crypto-transaction-toggle-active {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.crypto-transaction-toggle-active:hover {
+  background-color: #2980b9;
+}
+
+.crypto-transaction-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crypto-transaction-select,
+.crypto-transaction-input {
+  padding: 12px 15px;
+  border: 1px solid #d6d6d6;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #ffffff;
+}
+
+.crypto-transaction-select:focus,
+.crypto-transaction-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.crypto-transaction-submit {
+  padding: 14px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.crypto-transaction-submit:hover {
+  background-color: #219653;
+}

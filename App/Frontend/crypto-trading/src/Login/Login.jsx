@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login(props) {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -23,6 +23,8 @@ function Login() {
 
       if (result.status === true) {
         toast.success('Login successful!');
+
+        await props.fetchUser();
 
         navigate('/');
       } else {
