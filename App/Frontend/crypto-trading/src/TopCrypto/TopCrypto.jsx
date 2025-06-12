@@ -13,6 +13,16 @@ function TopCrypto(props) {
         const buypage = "/Transaction?type=BUY&symbol=" + symbolKey;
         const sellpage = "/Transaction?type=SELL&symbol=" + symbolKey;
 
+        if (props.isLoggedIn === false) {
+            return (<>
+                <tr key={symbol}>
+                    <td>{name}</td>
+                    <td>{symbol}</td>
+                    <td>${price}</td>
+                </tr>
+            </>)
+        }
+
         return (<>
             <tr key={symbol}>
                 <td>{name}</td>
@@ -26,6 +36,7 @@ function TopCrypto(props) {
         </>);
     })
 
+
     return (
         <>
             <table>
@@ -34,7 +45,7 @@ function TopCrypto(props) {
                         <th>Name</th>
                         <th>Symbol</th>
                         <th>Price</th>
-                        <th>Actions</th>
+                        {props.isLoggedIn ? <th>Actions</th> : ''}
                     </tr>
                 </thead>
                 <tbody>

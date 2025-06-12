@@ -70,11 +70,11 @@ function App() {
         <Routes>
           <Route element={<Layout isLoggedIn={loggedIn} user={user} />}>
 
-            <Route path="/" element={<TopCrypto cryptoData={cryptoData} />} />
+            <Route path="/" element={<TopCrypto isLoggedIn={loggedIn} cryptoData={cryptoData} />} />
 
             <Route path="/login" element={<Login fetchUser={fetchUser}/>} />
             
-            <Route path="/Register" element={<Register />} />
+            <Route path="/Register" element={<Login fetchUser={fetchUser}/>} />
 
             <Route path="/Transaction" element={<Transaction 
             cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />

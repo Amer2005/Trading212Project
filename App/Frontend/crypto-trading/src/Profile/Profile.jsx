@@ -1,6 +1,9 @@
 import {API_BASE_URL} from "../config.js"
+import { useNavigate } from 'react-router-dom';
 
 function Profile(props) {
+
+  const navigate = useNavigate();
 
   if (!props.isLoggedIn) {
     return;
@@ -17,6 +20,21 @@ function Profile(props) {
     });
 
     props.fetchUser();
+
+    return;
+  };
+
+  const logoutProfile = async () => {
+    const res = await fetch(API_BASE_URL + '/logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ "session": userData.session }),
+    });
+
+    props.fetchUser();
+
+    navigate('/');
 
     return;
   };
@@ -44,9 +62,15 @@ function Profile(props) {
 
       <button 
         onClick={resetProfile}
-        className="reset-button"
+        className="profile-button"
       >
         Reset Profile
+      </button>
+      <button 
+        onClick={logoutProfile}
+        className="profile-button"
+      >
+        Logout
       </button>
     </div>);
 }

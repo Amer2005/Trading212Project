@@ -2,10 +2,12 @@ package com.cryptotrading.cryptotrading.services.impl;
 
 import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
+import com.cryptotrading.cryptotrading.domain.dto.response.ResponseDto;
 import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.AuthenticationService;
 import com.cryptotrading.cryptotrading.services.UserService;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -81,6 +83,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         else {
             result.setStatus(false);
             result.setErrorMessage("Wrong username or password!");
+
+            return result;
+        }
+    }
+
+    @Override
+    public ResponseDto logoutUser(UUID session) {
+        ResponseDto result = new ResponseDto();
+
+        User user = userDao.findBySession(session);
+
+        if(user != null){
+
+            user.setSession(UUID.randomUUID());
+
+            userDao.update(user);
+
+            return userMapper.mapTo(user);
+        }
+        else {
+            result.setStatus(false);
+            result.setErrorMessage("User not found");
 
             return result;
         }

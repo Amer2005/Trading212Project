@@ -2,6 +2,8 @@ package com.cryptotrading.cryptotrading.controllers;
 
 import com.cryptotrading.cryptotrading.domain.User;
 import com.cryptotrading.cryptotrading.domain.dto.request.AuthRequestDto;
+import com.cryptotrading.cryptotrading.domain.dto.request.RequestDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.ResponseDto;
 import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.AuthenticationService;
@@ -74,5 +76,14 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(userResponseDto);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto> logoutUser(@RequestBody RequestDto requestDto) {
+        ResponseDto response = new UserResponseDto();
+
+        response = authenticationService.logoutUser(requestDto.getSession());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
