@@ -12,10 +12,10 @@ import com.cryptotrading.cryptotrading.services.CryptoPriceService;
 import com.cryptotrading.cryptotrading.services.HoldingService;
 import com.cryptotrading.cryptotrading.services.TransactionService;
 import com.cryptotrading.cryptotrading.services.UserService;
+import com.cryptotrading.cryptotrading.util.Validator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -28,14 +28,17 @@ public class TransactionServiceImpl implements TransactionService {
     private final CryptoPriceService cryptoPriceService;
     private final HoldingService holdingService;
 
+    private final Validator validator;
+
     private final TransactionDao transactionDao;
 
     private final Mapper<Transaction, TransactionResponseDto> transactionResponseMapper;
 
-    public TransactionServiceImpl(UserService userService, CryptoPriceService cryptoPriceService, HoldingService holdingService, TransactionDao transactionDao, Mapper<Transaction, TransactionResponseDto> transactionResponseMapper) {
+    public TransactionServiceImpl(UserService userService, CryptoPriceService cryptoPriceService, HoldingService holdingService, Validator validator, TransactionDao transactionDao, Mapper<Transaction, TransactionResponseDto> transactionResponseMapper) {
         this.userService = userService;
         this.cryptoPriceService = cryptoPriceService;
         this.holdingService = holdingService;
+        this.validator = validator;
         this.transactionDao = transactionDao;
         this.transactionResponseMapper = transactionResponseMapper;
     }
@@ -55,9 +58,24 @@ public class TransactionServiceImpl implements TransactionService {
             return result;
         }
 
-        if(amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if(validator.isStringForNullOrEmpty(symbol))
+        {
             result.setStatus(false);
-            result.setErrorMessage("Invalid amount");
+            result.setErrorMessage("Incorrect crypto symbol");
+
+            return result;
+        }
+
+        if(!validator.isPositive(amount)) {
+            result.setStatus(false);
+            result.setErrorMessage("Amount cannot be negative");
+
+            return result;
+        }
+
+        if(validator.isZero(amount)) {
+            result.setStatus(false);
+            result.setErrorMessage("Amount cannot be zero");
 
             return result;
         }
@@ -81,11 +99,18 @@ public class TransactionServiceImpl implements TransactionService {
 
         BigDecimal price = cryptoPriceService.getPrice(symbol);
 
+        if(!validator.isPositive(BigDecimal.ZERO)) {
+            result.setStatus(false);
+            result.setErrorMessage("Crypto not found");
+
+            return result;
+        }
+
         BigDecimal balance = user.getBalance();
 
         BigDecimal total = amount.multiply(price);
 
-        if(total.compareTo(balance) == 1) {
+        if(total.compareTo(balance) > 0) {
 
             result.setStatus(false);
             result.setErrorMessage("Bought total exceeds user's balance!");
@@ -119,14 +144,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         BigDecimal price = cryptoPriceService.getPrice(symbol);
 
-        if(price.compareTo(BigDecimal.ZERO) <= 0) {
+        if(!validator.isPositive(price)) {
             result.setStatus(false);
             result.setErrorMessage("Crypto not found");
 
             return result;
         }
 
-        Holding currentHolding = holdingService.getByUserIdAndSmybol(user.getId(), symbol);
+        Holding currentHolding = holdingService.getByUserIdAndSymbol(user.getId(), symbol);
 
         if(currentHolding == null)
         {
@@ -136,7 +161,7 @@ public class TransactionServiceImpl implements TransactionService {
             return result;
         }
 
-        if(currentHolding.getAmount().compareTo(amount) == -1) {
+        if(currentHolding.getAmount().compareTo(amount) < 0) {
             result.setStatus(false);
             result.setErrorMessage("User does not have enough " + symbol);
 
@@ -145,7 +170,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         BigDecimal total = amount.multiply(price);
 
-        userService.getMoney(user.getSession(), total);
+        userService.increaseMoney(user.getSession(), total);
 
         Transaction transaction = Transaction.builder()
                 .userId(user.getId())
@@ -167,13 +192,22 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void deleteTransaction(UUID id)
-    {
+    public void deleteTransaction(UUID id) {
+        if(!validator.isUUIDValid(id))
+        {
+            return;
+        }
+
         transactionDao.delete(id);
     }
 
     @Override
     public void deleteUserTransactions(UUID userId) {
+        if(!validator.isUUIDValid(userId))
+        {
+            return;
+        }
+
         transactionDao.deleteUserTransactions(userId);
     }
 
@@ -182,9 +216,25 @@ public class TransactionServiceImpl implements TransactionService {
     {
         ViewTransactionsResponseDto result = new ViewTransactionsResponseDto();
 
+        if(!validator.isUUIDValid(userId))
+        {
+            result.setStatus(false);
+            result.setErrorMessage("User not found");
+
+            return result;
+        }
+
         List<TransactionResponseDto> transactionResponseDtos = result.getTransactions();
 
         List<Transaction> transactions = transactionDao.getUserTransactions(userId);
+
+        if(transactions == null)
+        {
+            result.setStatus(false);
+            result.setErrorMessage("No transactions found");
+
+            return result;
+        }
 
         for (Transaction transaction : transactions) {
             transactionResponseDtos.add(transactionResponseMapper.mapTo(transaction));

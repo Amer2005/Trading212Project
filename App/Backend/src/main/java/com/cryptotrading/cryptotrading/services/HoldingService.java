@@ -13,7 +13,7 @@ public interface HoldingService {
 
     void sellHolding(UUID userId, String symbol, BigDecimal amount);
 
-    Holding getByUserIdAndSmybol(UUID userId, String symbol);
+    Holding getByUserIdAndSymbol(UUID userId, String symbol);
 
     void deleteUserHoldings(UUID userId);
 

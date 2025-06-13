@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    private final Mapper<Transaction, TransactionResponseDto> transactionMapper;
-
-    public TransactionController(TransactionService transactionService, Mapper<Transaction, TransactionResponseDto> transactionMapper) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-        this.transactionMapper = transactionMapper;
     }
 
-    @PostMapping("/buy")
+    @PostMapping("/transaction/create")
     public ResponseEntity<TransactionResponseDto> startBuyTransaction(@RequestBody TransactionCreateRequestDto transactionInfo) {
         TransactionResponseDto transaction = transactionService.createTransaction(transactionInfo.
                 getUserSession(),

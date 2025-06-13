@@ -17,7 +17,7 @@ public interface UserService {
 
     void spendMoney(UUID session, BigDecimal amount);
 
-    void getMoney(UUID session, BigDecimal amount);
+    void increaseMoney(UUID session, BigDecimal amount);
 
     UserResponseDto getUserDtoBySession(UUID session);
 }

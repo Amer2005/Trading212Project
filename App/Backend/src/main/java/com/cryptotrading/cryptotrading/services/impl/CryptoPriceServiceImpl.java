@@ -30,12 +30,11 @@ public class CryptoPriceServiceImpl implements CryptoPriceService {
             JSONObject result = json.getJSONObject("result");
             JSONObject pairData = result.getJSONObject(result.keys().next());
 
-            // "c" is the last trade closed array: [<price>, <lot volume>]
             String priceStr = pairData.getJSONArray("c").getString(0);
 
             return new BigDecimal(priceStr);
         } catch (Exception e) {
-            return BigDecimal.valueOf(-1); // or throw a custom exception
+            return BigDecimal.valueOf(-1);
         }
     }
 

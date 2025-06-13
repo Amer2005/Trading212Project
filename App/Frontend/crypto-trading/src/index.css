@@ -278,3 +278,7 @@ nav a:hover {
 .green-text {
   color: #219653;
 }
+
+.price-header {
+  width: 20vw;
+}

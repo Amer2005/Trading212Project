@@ -73,7 +73,7 @@ function Transaction(props) {
                 "amount": amount
             };
 
-            const result = await fetch(API_BASE_URL + '/buy', {
+            const result = await fetch(API_BASE_URL + '/transaction/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',

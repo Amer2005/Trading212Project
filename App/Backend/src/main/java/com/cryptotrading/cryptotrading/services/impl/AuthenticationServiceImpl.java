@@ -7,6 +7,7 @@ import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.AuthenticationService;
 import com.cryptotrading.cryptotrading.services.UserService;
+import com.cryptotrading.cryptotrading.util.Validator;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +21,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserDao userDao;
 
+    private final Validator validator;
+
     private final UserService userService;
 
     private final Mapper<User, UserResponseDto> userMapper;
 
-    public AuthenticationServiceImpl(UserDao userDao, UserService userService, Mapper<User, UserResponseDto> userMapper) {
+    public AuthenticationServiceImpl(UserDao userDao, Validator validator, UserService userService, Mapper<User, UserResponseDto> userMapper) {
         this.userDao = userDao;
+        this.validator = validator;
         this.userService = userService;
         this.userMapper = userMapper;
     }
@@ -35,8 +39,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         UserResponseDto result = new UserResponseDto();
 
-        if(userService.doesUsernameExist(username))
-        {
+        if(!validator.isUsernameValid(username)) {
+            result.setStatus(false);
+            result.setErrorMessage("Invalid Username!");
+
+            return result;
+        }
+
+        if(!validator.isPasswordValid(password)) {
+            result.setStatus(false);
+            result.setErrorMessage("Invalid Password!");
+
+            return result;
+        }
+
+        if(userService.doesUsernameExist(username)) {
             result.setStatus(false);
 
             result.setErrorMessage("User with that username already exists!");
@@ -60,6 +77,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserResponseDto loginUser(String username, String password) {
         UserResponseDto result = new UserResponseDto();
 
+        if(!validator.isUsernameValid(username)) {
+            result.setStatus(false);
+            result.setErrorMessage("Invalid Username!");
+
+            return result;
+        }
+
+        if(!validator.isPasswordValid(password)) {
+            result.setStatus(false);
+            result.setErrorMessage("Invalid Password!");
+
+            return result;
+        }
+
         if(!userService.doesUsernameExist(username)) {
 
             result.setStatus(false);
@@ -69,6 +100,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         User user = userDao.findByUsername(username);
+
+        if(user == null)
+        {
+            result.setStatus(false);
+            result.setErrorMessage("User not found!");
+
+            return result;
+        }
 
         String DBPassword = userDao.findPassword(user.getId());
 
@@ -91,6 +130,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public ResponseDto logoutUser(UUID session) {
         ResponseDto result = new ResponseDto();
+
+        if(!validator.isUUIDValid(session)) {
+            result.setStatus(false);
+            result.setErrorMessage("Invalid session!");
+            return result;
+        }
 
         User user = userDao.findBySession(session);
 

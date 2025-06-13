@@ -38,9 +38,6 @@ function TopCrypto(props) {
 
         reset_animation(elementId, elementIdInner, change);
 
-        
-            console.log(change);
-
         if (change == 0 || change == price.toFixed(4)) {
 
             return (<>
@@ -67,13 +64,13 @@ function TopCrypto(props) {
                 <td>{symbol}</td>
                 {isProfit ?
                     <td id={elementId} className={styles.profit}>{price}$
-                        <span className={styles.change}>(
-                            +<span id={elementIdInner}>{change}</span>$)</span>
+                        <span className={styles.change}>
+                            <span hidden id={elementIdInner}>{change}</span></span>
                     </td>
                     :
                     <td id={elementId} className={styles.loss}>{price}$
-                        <span className={styles.change}>(
-                            <span id={elementIdInner}>{change}</span>$)</span>
+                        <span className={styles.change}>
+                            <span hidden id={elementIdInner}>{change}</span></span>
                     </td>}
 
                 {props.isLoggedIn ?
@@ -95,7 +92,7 @@ function TopCrypto(props) {
                     <tr>
                         <th>Name</th>
                         <th>Symbol</th>
-                        <th>Price</th>
+                        <th className='price-header'>Price</th>
                         {props.isLoggedIn ? <th>Actions</th> : ''}
                     </tr>
                 </thead>
