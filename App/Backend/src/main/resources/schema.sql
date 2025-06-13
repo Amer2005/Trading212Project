@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS "holdings";
 DROP TABLE IF EXISTS "transactions";
 DROP TABLE IF EXISTS "users";
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         username VARCHAR(50) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
@@ -12,14 +12,14 @@ CREATE TABLE users (
         session UUID DEFAULT uuid_generate_v4()
 );
 
-CREATE TABLE holdings (
+CREATE TABLE IF NOT EXISTS holdings (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         user_id UUID REFERENCES users(id),
         symbol VARCHAR(10),
         amount NUMERIC(18, 8) NOT NULL
 );
 
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
         user_id UUID REFERENCES users(id),
         type VARCHAR(4) NOT NULL, --This should be "BUY" or "SELL"

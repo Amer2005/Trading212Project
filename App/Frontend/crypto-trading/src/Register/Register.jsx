@@ -77,7 +77,7 @@ function Register(props) {
           </div>
 
           <button type="submit" className="login-button">
-            Log In
+            Register
           </button>
 
           <ToastContainer />

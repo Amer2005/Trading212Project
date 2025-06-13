@@ -53,7 +53,7 @@ public class UserDaoImplTests {
         userDao.findOne(id);
 
         verify(jdbcTemplate).query(
-                eq("SELECT id, username, balance FROM users WHERE id = ? LIMIT 1"),
+                eq("SELECT id, username, balance, session FROM users WHERE id = ? LIMIT 1"),
                 ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),
                 eq(id)
         );

@@ -48,7 +48,7 @@ public class TransactionDaoImplTests {
         transactionDao.create(transaction);
 
         verify(jdbcTemplate).update(eq(
-                        "INSERT INTO transactions (user_id, type, symbol, amount, price, total, transaction_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
+                        "INSERT INTO transactions (user_id, type, symbol, amount, price, total, transaction_time) VALUES (?, ?, ?, ?, ?, ?, ?)"),
                 eq(userId), eq(type.name()), eq(symbol), eq(amount), eq(price), eq(total), eq(transactionTime));
     }
 }
