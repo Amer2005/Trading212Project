@@ -9,12 +9,17 @@ export default function useKrakenWS(pairs = defaultPairs) {
         const cryptoSymbol = data.symbol;
         const cryptoPrice = data.ask;
 
-        setCryptoData(prev => (
-            {
-                ...prev, 
-                [cryptoSymbol]: cryptoPrice
-            }
-        ));
+        setCryptoData(prev => {
+            const prevPrice = prev[cryptoSymbol]?.price ?? null;
+
+            return {
+                ...prev,
+                [cryptoSymbol]: {
+                    price: cryptoPrice,
+                    lastPrice: prevPrice
+                }
+            };
+        });
     }
 
     useEffect(() => {

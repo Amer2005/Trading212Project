@@ -67,7 +67,7 @@ function Holdings(props) {
         {holdings.holdings.map((holding) => {
           const symbol = holding.symbol;
           const name = symbolNames[symbol] || symbol;
-          const priceRaw = cryptoData?.[symbol + '/USD'] || 'N/A';
+          const priceRaw = cryptoData?.[symbol + '/USD']?.price || 'N/A';
           const price = priceRaw === 'N/A' ? 0 : priceRaw.toFixed(3);
           const total = priceRaw === 'N/A' ? 0 : (priceRaw * holding.amount).toFixed(3);
           return (

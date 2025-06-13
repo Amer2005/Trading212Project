@@ -43,3 +43,42 @@ a:hover {
 button:hover {
     opacity: 0.9;
 }
+
+.loss {
+    font-weight: bold;
+    animation: flash-loss 1s forwards;
+}
+
+.profit {
+    font-weight: bold;
+    animation: flash-profit 1s forwards;
+}
+
+@keyframes flash-profit {
+    0% {
+        color: #4CAF50;
+    }
+
+    50%  { color: #4CAF50; }
+
+    100% {
+        color: black;
+    }
+}
+
+@keyframes flash-loss {
+    0% {
+        color: red;
+    }
+
+    50%  { color: red }
+
+    100% {
+        color: black;
+    }
+}
+
+.change {
+    font-size: 13px;
+    padding-left: 10px;
+}

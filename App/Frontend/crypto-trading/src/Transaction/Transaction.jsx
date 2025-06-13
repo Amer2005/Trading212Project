@@ -12,13 +12,9 @@ function Transaction(props) {
     const transactionType = searchParams.get('type');
     const defaultSymbol = searchParams.get('symbol');
 
-    if (!props.isLoggedIn) {
-        return;
-    }
-
     let userData = props.user;
     const cryptoData = props.cryptoData;
-    let defautlPrice = cryptoData[defaultSymbol];
+    let defautlPrice = cryptoData[defaultSymbol].price;
 
     const [selectedType, setSelectedType] = useState(transactionType)
     const [selectedCrypto, setSelectedCrypto] = useState(defaultSymbol);
@@ -30,7 +26,7 @@ function Transaction(props) {
     const cryptoList = Object.keys(cryptoData).map((symbolKey) => {
         const symbol = symbolKey.split("/")[0];
         const name = symbolNames[symbol] || symbol;
-        const price = cryptoData[symbolKey];
+        const price = cryptoData[symbolKey].price;
 
         return (<>
             <option value={symbolKey}>{name}: {price}$</option>
@@ -46,11 +42,11 @@ function Transaction(props) {
     function handleSelectChange(e) {
         let value = e.target.value;
 
-        if (cryptoData[value] === null) {
+        if (cryptoData[value] === null || cryptoData[value].price === null) {
             return;
         }
 
-        let price = cryptoData[value];
+        let price = cryptoData[value].price;
 
         setSelectedCryptoPrice(price);
         setSelectedCrypto(value);
