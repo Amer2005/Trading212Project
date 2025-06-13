@@ -270,3 +270,11 @@ nav a:hover {
 .crypto-transaction-submit:hover {
   background-color: #219653;
 }
+
+.red-text {
+  color: #ef4444;
+}
+
+.green-text {
+  color: #219653;
+}

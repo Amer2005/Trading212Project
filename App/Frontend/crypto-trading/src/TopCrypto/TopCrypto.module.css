@@ -10,6 +10,7 @@ td {
     border: 1px solid #ddd;
     padding: 1em;
     text-align: center;
+    font-weight: bold;
 }
 
 th {

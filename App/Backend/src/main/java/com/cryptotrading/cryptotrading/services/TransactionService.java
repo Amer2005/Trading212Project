@@ -2,6 +2,7 @@ package com.cryptotrading.cryptotrading.services;
 
 import com.cryptotrading.cryptotrading.domain.Transaction;
 import com.cryptotrading.cryptotrading.domain.dto.response.TransactionResponseDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.ViewTransactionsResponseDto;
 import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
 
 import java.math.BigDecimal;
@@ -13,4 +14,6 @@ public interface TransactionService {
     void deleteTransaction(UUID id);
 
     void deleteUserTransactions(UUID userId);
+
+    ViewTransactionsResponseDto getUserTransactions(UUID userId);
 }

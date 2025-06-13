@@ -35,8 +35,6 @@ function Holdings(props) {
       if (response.ok) {
         const holdingsData = await response.json();
 
-        console.log(holdingsData);
-
         setHoldings(holdingsData);
       }
       else {

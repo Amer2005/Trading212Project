@@ -4,6 +4,7 @@ import com.cryptotrading.cryptotrading.dao.TransactionDao;
 import com.cryptotrading.cryptotrading.dao.UserDao;
 import com.cryptotrading.cryptotrading.domain.User;
 import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.ViewTransactionsResponseDto;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.HoldingService;
 import com.cryptotrading.cryptotrading.services.TransactionService;

@@ -5,6 +5,7 @@ import com.cryptotrading.cryptotrading.domain.Holding;
 import com.cryptotrading.cryptotrading.domain.Transaction;
 import com.cryptotrading.cryptotrading.domain.User;
 import com.cryptotrading.cryptotrading.domain.dto.response.TransactionResponseDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.ViewTransactionsResponseDto;
 import com.cryptotrading.cryptotrading.domain.enums.TransactionTypeEnum;
 import com.cryptotrading.cryptotrading.mappers.Mapper;
 import com.cryptotrading.cryptotrading.services.CryptoPriceService;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -173,6 +175,22 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void deleteUserTransactions(UUID userId) {
         transactionDao.deleteUserTransactions(userId);
+    }
+
+    @Override
+    public ViewTransactionsResponseDto getUserTransactions(UUID userId)
+    {
+        ViewTransactionsResponseDto result = new ViewTransactionsResponseDto();
+
+        List<TransactionResponseDto> transactionResponseDtos = result.getTransactions();
+
+        List<Transaction> transactions = transactionDao.getUserTransactions(userId);
+
+        for (Transaction transaction : transactions) {
+            transactionResponseDtos.add(transactionResponseMapper.mapTo(transaction));
+        }
+
+        return result;
     }
 
 }

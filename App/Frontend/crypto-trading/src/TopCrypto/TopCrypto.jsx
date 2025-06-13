@@ -68,7 +68,7 @@ function TopCrypto(props) {
                 {isProfit ?
                     <td id={elementId} className={styles.profit}>{price}$
                         <span className={styles.change}>(
-                            <span id={elementIdInner}>{change}</span>$)</span>
+                            +<span id={elementIdInner}>{change}</span>$)</span>
                     </td>
                     :
                     <td id={elementId} className={styles.loss}>{price}$

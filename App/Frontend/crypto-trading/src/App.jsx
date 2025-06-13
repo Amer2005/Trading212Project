@@ -9,6 +9,7 @@ import Register from './Register/Register.jsx'
 import Profile from './Profile/Profile.jsx';
 import Transaction from './Transaction/Transaction.jsx'
 import Holdings from './Holdings/Holdings.jsx'
+import ViewTransactions from './Transaction/ViewTransactions.jsx'
 import { getCookie } from './services/cookieService.js';
 import { API_BASE_URL } from './config.js'
 
@@ -20,7 +21,7 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      
+
 
       const sessionId = getCookie('SESSIONID');
       if (!sessionId) {
@@ -67,16 +68,18 @@ function App() {
 
             <Route path="/" element={<TopCrypto isLoggedIn={loggedIn} cryptoData={cryptoData} />} />
 
-            <Route path="/login" element={<Login fetchUser={fetchUser}/>} />
-            
-            <Route path="/register" element={<Register fetchUser={fetchUser}/>} />
+            <Route path="/login" element={<Login fetchUser={fetchUser} />} />
+
+            <Route path="/register" element={<Register fetchUser={fetchUser} />} />
 
             <Route path="/holdings" element={<Holdings isLoggedIn={loggedIn} cryptoData={cryptoData} />} />
+            
+            <Route path="/transactions" element={<ViewTransactions isLoggedIn={loggedIn} cryptoData={cryptoData} />} />
+            
+            <Route path="/transaction" element={<Transaction
+              cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser} />} />
 
-            <Route path="/transaction" element={<Transaction 
-            cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
-
-            <Route path="/profile" element={<Profile isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
+            <Route path="/profile" element={<Profile isLoggedIn={loggedIn} user={user} fetchUser={fetchUser} />} />
 
             <Route path="*" element={<div>404 Not Found</div>} />
 
