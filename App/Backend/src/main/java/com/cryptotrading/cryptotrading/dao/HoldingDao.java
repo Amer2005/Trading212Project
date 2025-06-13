@@ -2,6 +2,7 @@ package com.cryptotrading.cryptotrading.dao;
 
 import com.cryptotrading.cryptotrading.domain.Holding;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface HoldingDao {
@@ -16,4 +17,6 @@ public interface HoldingDao {
     void delete(UUID id);
 
     void deleteUserHoldings(UUID userId);
+
+    List<Holding> getUserHoldings(UUID userId);
 }

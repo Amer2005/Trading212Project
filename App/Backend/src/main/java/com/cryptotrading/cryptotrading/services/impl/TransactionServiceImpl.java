@@ -174,4 +174,5 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteUserTransactions(UUID userId) {
         transactionDao.deleteUserTransactions(userId);
     }
+
 }

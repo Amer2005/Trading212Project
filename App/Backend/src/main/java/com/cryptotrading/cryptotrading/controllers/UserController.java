@@ -2,6 +2,8 @@ package com.cryptotrading.cryptotrading.controllers;
 
 import com.cryptotrading.cryptotrading.domain.dto.request.RequestDto;
 import com.cryptotrading.cryptotrading.domain.dto.response.UserResponseDto;
+import com.cryptotrading.cryptotrading.domain.dto.response.ViewHoldingsResponseDto;
+import com.cryptotrading.cryptotrading.services.HoldingService;
 import com.cryptotrading.cryptotrading.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final HoldingService holdingService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, HoldingService holdingService) {
         this.userService = userService;
+        this.holdingService = holdingService;
     }
 
     @PostMapping("/reset")
@@ -34,5 +38,28 @@ public class UserController {
         }
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/holdings")
+    public ResponseEntity<ViewHoldingsResponseDto> getHoldings(@RequestBody RequestDto requestDto)
+    {
+        ViewHoldingsResponseDto responseDto = new ViewHoldingsResponseDto();
+
+        UserResponseDto user = userService.getUserDtoBySession(requestDto.getSession());
+
+        if(!user.getStatus())
+        {
+            responseDto.setStatus(false);
+            return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
+        }
+
+        ViewHoldingsResponseDto holdings = holdingService.getUserHoldings(user.getId());
+
+        if(!holdings.getStatus())
+        {
+            return new ResponseEntity<>(holdings, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(holdings, HttpStatus.OK);
     }
 }

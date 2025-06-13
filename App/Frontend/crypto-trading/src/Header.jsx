@@ -9,9 +9,9 @@ function Header(props) {
             <header>
                 <nav>
                     <Link className="" to="/">Home</Link>
-                    <Link className="" to="/Profile">Profile</Link>
-                    <Link className="" to="/Holdings">Holdings</Link>
-                    <Link className="" to="/Transactions">Transactions</Link>
+                    <Link className="" to="/profile">Profile</Link>
+                    <Link className="" to="/holdings">Holdings</Link>
+                    <Link className="" to="/transactions">Transactions</Link>
                 </nav>
 
                 <div style={{ color: 'white', fontWeight: 'bold' }}>

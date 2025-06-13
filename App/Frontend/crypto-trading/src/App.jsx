@@ -8,7 +8,8 @@ import Login from './Login/Login.jsx'
 import Register from './Register/Register.jsx'
 import Profile from './Profile/Profile.jsx';
 import Transaction from './Transaction/Transaction.jsx'
-
+import Holdings from './Holdings/Holdings.jsx'
+import { getCookie } from './services/cookieService.js';
 import { API_BASE_URL } from './config.js'
 
 
@@ -16,12 +17,6 @@ function App() {
   const cryptoData = useKrakenWS();
   const [user, setUser] = useState(null);
   const [loggedIn, setloggedIn] = useState(false);
-
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  };
 
   const fetchUser = async () => {
     try {
@@ -74,12 +69,14 @@ function App() {
 
             <Route path="/login" element={<Login fetchUser={fetchUser}/>} />
             
-            <Route path="/Register" element={<Register fetchUser={fetchUser}/>} />
+            <Route path="/register" element={<Register fetchUser={fetchUser}/>} />
 
-            <Route path="/Transaction" element={<Transaction 
+            <Route path="/holdings" element={<Holdings isLoggedIn={loggedIn} cryptoData={cryptoData} />} />
+
+            <Route path="/transaction" element={<Transaction 
             cryptoData={cryptoData} isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
 
-            <Route path="/Profile" element={<Profile isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
+            <Route path="/profile" element={<Profile isLoggedIn={loggedIn} user={user} fetchUser={fetchUser}/>} />
 
             <Route path="*" element={<div>404 Not Found</div>} />
 

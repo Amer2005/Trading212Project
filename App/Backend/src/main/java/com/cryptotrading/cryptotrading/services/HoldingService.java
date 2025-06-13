@@ -1,6 +1,7 @@
 package com.cryptotrading.cryptotrading.services;
 
 import com.cryptotrading.cryptotrading.domain.Holding;
+import com.cryptotrading.cryptotrading.domain.dto.response.ViewHoldingsResponseDto;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -15,4 +16,6 @@ public interface HoldingService {
     Holding getByUserIdAndSmybol(UUID userId, String symbol);
 
     void deleteUserHoldings(UUID userId);
+
+    ViewHoldingsResponseDto getUserHoldings(UUID userId);
 }

@@ -51,6 +51,14 @@ public class TransactionDaoImpl implements TransactionDao {
         jdbcTemplate.update("DELETE FROM transactions WHERE user_id = ?", userId);
     }
 
+    @Override
+    public List<Transaction> getUserTransactions(UUID userId)
+    {
+        return jdbcTemplate.query(
+                "SELECT * FROM transactions WHERE user_id = ?",
+                new TransactionRowMapper(),
+                userId);
+    }
 
     public static class TransactionRowMapper implements RowMapper<Transaction> {
         public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
