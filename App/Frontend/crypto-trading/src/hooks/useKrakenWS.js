@@ -8,17 +8,30 @@ export default function useKrakenWS(pairs = defaultPairs) {
     function onTickerEvent(data) {
         const cryptoSymbol = data.symbol;
         const cryptoPrice = data.ask;
+        const cryptoVolume = data.volume;
 
         setCryptoData(prev => {
+
+
             const prevPrice = prev[cryptoSymbol]?.price ?? null;
 
-            return {
+            const updated = {
                 ...prev,
                 [cryptoSymbol]: {
                     price: cryptoPrice,
-                    lastPrice: prevPrice
+                    lastPrice: prevPrice,
+                    volume: cryptoVolume
                 }
             };
+
+            const sortedData = Object.entries(updated)
+                .sort((a, b) => -(b[1].volume - a[1].volume)) // Compare volumes
+                .reduce((acc, [key, value]) => {
+                    acc[key] = value;
+                    return acc;
+                }, {});
+
+            return sortedData;
         });
     }
 

@@ -30,7 +30,7 @@ public class CryptoPriceServiceImpl implements CryptoPriceService {
             JSONObject result = json.getJSONObject("result");
             JSONObject pairData = result.getJSONObject(result.keys().next());
 
-            String priceStr = pairData.getJSONArray("c").getString(0);
+            String priceStr = pairData.getJSONArray("a").getString(0);
 
             return new BigDecimal(priceStr);
         } catch (Exception e) {

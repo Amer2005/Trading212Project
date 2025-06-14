@@ -12,7 +12,7 @@ public class ValidatorImpl implements Validator {
 
     @Override
     public boolean isStringForNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
+        return string == null || string.trim().isEmpty();
     }
 
     @Override

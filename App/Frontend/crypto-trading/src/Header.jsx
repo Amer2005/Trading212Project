@@ -10,7 +10,7 @@ function Header(props) {
                 <nav>
                     <Link className="" to="/">Home</Link>
                     <Link className="" to="/profile">Profile</Link>
-                    <Link className="" to="/holdings">Holdings</Link>
+                    <Link className="" to="/holdings">Wallet</Link>
                     <Link className="" to="/transactions">Transactions</Link>
                 </nav>
 
